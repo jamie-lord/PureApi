@@ -15,5 +15,6 @@ namespace PureApi.Models
         public int Length { get; set; }
         public TimeSpan TimeToRead { get; set; }
         public DateTime? PublicationDate { get; set; }
+        public bool CacheHit { get; set; }
     }
 }
