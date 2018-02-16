@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using PureApi.Extensions;
 using PureApi.Models;
 using SmartReader;
+using System;
 
 namespace PureApi.Controllers
 {
@@ -11,6 +12,9 @@ namespace PureApi.Controllers
     public class CleanController : Controller
     {
         private IMemoryCache _cache;
+        private readonly MemoryCacheEntryOptions _cacheEntryOptions = new MemoryCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromMinutes(45))
+            .SetAbsoluteExpiration(TimeSpan.FromHours(1));
 
         public CleanController(IMemoryCache memoryCache)
         {
@@ -40,7 +44,7 @@ namespace PureApi.Controllers
 
             result = ResultMaker.FromArticle(article);
 
-            _cache.Set(url, result);
+            _cache.Set(url, result, _cacheEntryOptions);
 
             return result;
         }
